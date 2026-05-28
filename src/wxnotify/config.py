@@ -5,6 +5,8 @@ import shutil
 import tempfile
 from pathlib import Path
 
+from . import api
+
 
 def _config_dir():
     xdg = os.environ.get('XDG_CONFIG_HOME')
@@ -55,6 +57,20 @@ def set_location(lat, lon):
     data = _load_or_create()
     data['lat'] = str(lat)
     data['lon'] = str(lon)
+    save_config(data)
+
+
+def set_location_by_zip(zip_code, country_code):
+    data = _load_or_create()
+    if 'appid' not in data:
+        print("Error: API key not set. Run 'wxnotify set-apikey <key>' first.",
+              file=sys.stderr)
+        sys.exit(1)
+    result = api.geocode_by_zip(zip_code, country_code, data['appid'])
+    data['lat'] = str(result['lat'])
+    data['lon'] = str(result['lon'])
+    data['zip_code'] = zip_code
+    data['zip_country'] = country_code
     save_config(data)
 
 

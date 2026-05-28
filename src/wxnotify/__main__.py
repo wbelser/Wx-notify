@@ -12,6 +12,12 @@ def main():
             print("Usage: wxnotify set-location <lat> <lon>", file=sys.stderr)
             sys.exit(1)
         config.set_location(argv[1], argv[2])
+    elif argv[0] == 'set-location-zip':
+        if len(argv) != 3:
+            print("Usage: wxnotify set-location-zip <zip> <country_code>",
+                  file=sys.stderr)
+            sys.exit(1)
+        config.set_location_by_zip(argv[1], argv[2])
     elif argv[0] == 'set-apikey':
         if len(argv) != 2:
             print("Usage: wxnotify set-apikey <key>", file=sys.stderr)
@@ -47,6 +53,7 @@ def _print_help():
     print("  (no args)                    Show current weather notification")
     print("  <hours>                      Show forecast notification (0-120 hours)")
     print("  set-location <lat> <lon>     Set latitude and longitude")
+    print("  set-location-zip <zip> <cc>  Set location by zip code and country code")
     print("  set-apikey <key>             Set OpenWeatherMap API key")
     print("  set-units <imperial|metric>  Set temperature units")
     print("  show-config                  Display current configuration")

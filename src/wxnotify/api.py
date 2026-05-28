@@ -22,6 +22,14 @@ def _request(url, params):
     return json.loads(resp.read().decode())
 
 
+def geocode_by_zip(zip_code, country_code, appid):
+    params = {
+        'zip': f"{zip_code},{country_code}",
+        'appid': appid,
+    }
+    return _request('/geo/1.0/zip', params)
+
+
 def fetch_current(config):
     params = {
         'lat': config['lat'],

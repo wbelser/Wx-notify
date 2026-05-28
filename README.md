@@ -94,14 +94,24 @@ wxnotify set-location 41.66 -93.60
 
 Accepts latitude and longitude as decimal degrees.
 
-### 3. Choose units (optional)
+### 3. Set your location by ZIP code (alternative)
+
+```bash
+wxnotify set-location-zip 50309 us
+```
+
+Resolves a ZIP/postal code to coordinates via the OpenWeatherMap Geocoding API
+and stores the result in your config. The original ZIP code and country code
+are saved as metadata (`zip_code`, `zip_country`) in the config file.
+
+### 4. Choose units (optional)
 
 ```bash
 wxnotify set-units imperial     # Fahrenheit, mph (default if not set)
 wxnotify set-units metric       # Celsius, m/s
 ```
 
-### 4. Verify configuration
+### 5. Verify configuration
 
 ```bash
 wxnotify show-config
@@ -186,7 +196,7 @@ wxnotify -V
 wxnotify --version
 ```
 
-Prints `wxnotify 1.0.1` and exits.
+Prints `wxnotify 1.0.2` and exits.
 
 > **Note:** If you type an unrecognized command, wxnotify prints an error
 > message showing the unknown command and suggests using `wxnotify help`.
@@ -198,6 +208,7 @@ Prints `wxnotify 1.0.1` and exits.
 | `wxnotify show-config`            | Print current config (API key masked)  |
 | `wxnotify set-apikey <key>`       | Save OpenWeatherMap API key            |
 | `wxnotify set-location <lat> <lon>`| Save latitude and longitude           |
+| `wxnotify set-location-zip <zip> <country_code>`| Resolve ZIP code to coordinates and save |
 | `wxnotify set-units <imperial|metric>`| Save unit preference              |
 | `wxnotify help` / `-h` / `--help` | Show help message listing all commands |
 | `wxnotify version` / `-V` / `--version` | Show version information        |
@@ -227,7 +238,8 @@ Derived by rounding degrees and indexing the 16-point table.
 
 - **config.py** -- reads/writes `~/.config/wxnotify/config.json` with atomic
   save (write to temp file, then rename). Validates required keys and unit
-  values on load.
+  values on load. The config may optionally include `zip_code` and `zip_country`
+  metadata fields (set by the `set-location-zip` command).
 - **api.py** -- uses `urllib.request` to call `/data/2.5/weather` (current) or
   `/data/2.5/forecast` (5-day/3-hour). Forecast selects the entry nearest the
   requested timestamp and validates it falls within the available window.
