@@ -15,7 +15,7 @@ Wx-notify/
   README.md
   src/
     wxnotify/
-      __init__.py         # Package marker (empty)
+      __init__.py         # Package marker, __version__ string
       __main__.py         # CLI dispatch, main() entry point
       config.py           # Config file read/write at ~/.config/wxnotify/
       api.py              # OpenWeatherMap HTTP calls (current + forecast)
@@ -170,6 +170,27 @@ Humidity: 54%  Pressure: 1015 hPa
 Rain: 40%
 ```
 
+### Help
+
+```bash
+wxnotify help          # Same as wxnotify -h or wxnotify --help
+```
+
+Prints usage information listing all available commands and exits.
+
+### Version
+
+```bash
+wxnotify version       # Same as wxnotify -V or wxnotify --version
+wxnotify -V
+wxnotify --version
+```
+
+Prints `wxnotify 1.0.1` and exits.
+
+> **Note:** If you type an unrecognized command, wxnotify prints an error
+> message showing the unknown command and suggests using `wxnotify help`.
+
 ## Helper Commands
 
 | Command                           | Description                            |
@@ -178,6 +199,8 @@ Rain: 40%
 | `wxnotify set-apikey <key>`       | Save OpenWeatherMap API key            |
 | `wxnotify set-location <lat> <lon>`| Save latitude and longitude           |
 | `wxnotify set-units <imperial|metric>`| Save unit preference              |
+| `wxnotify help` / `-h` / `--help` | Show help message listing all commands |
+| `wxnotify version` / `-V` / `--version` | Show version information        |
 
 ### Files and Paths
 
@@ -214,8 +237,9 @@ Derived by rounding degrees and indexing the 16-point table.
 - **notify.py** -- builds the notification body string, computes compass
   direction, and dispatches via `subprocess.run(['notify-send', ...])` with
   a 10-second timeout and application name `wxnotify`.
-- **__main__.py** -- parses `sys.argv`, dispatches to sub-commands, and glues
-  config/api/icons/notify together for current and forecast flows.
+- **__main__.py** -- parses `sys.argv`, dispatches to sub-commands (including
+  `help` and `version`), and glues config/api/icons/notify together for
+  current and forecast flows. Unknown arguments print a usage hint.
 
 ## License
 
