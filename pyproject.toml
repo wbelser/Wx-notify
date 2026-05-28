@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wxnotify"
+version = "1.0.0"
+description = "Desktop weather notifications via OpenWeatherMap and notify-send"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.9"
+keywords = ["weather", "notifications", "cli"]
+
+[project.urls]
+Homepage = "https://github.com/wbelser/Wx-notify"
+
+[project.scripts]
+wxnotify = "wxnotify.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
